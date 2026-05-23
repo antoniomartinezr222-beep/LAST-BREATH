@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% block title %}Servicios - Last Breath{% endblock %}
+
+{% block extra_css %}
+<style>
+    .page-hero {
+        padding: 4rem 0;
+        background: radial-gradient(ellipse 60% 60% at 50% 0%, rgba(0,212,212,0.08), transparent);
+        border-bottom: 1px solid var(--border);
+        text-align: center;
+    }
+
+    .page-label {
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--cyan);
+        margin-bottom: 0.8rem;
+    }
+
+    .page-title {
+        font-family: 'Playfair Display', 'Times New Roman', Georgia, serif;
+        font-size: clamp(2.5rem, 6vw, 5rem);
+        letter-spacing: 3px;
+    }
+
+    .page-sub { color: var(--muted); margin-top: 0.8rem; }
+
+    .services-section { padding: 4rem 0; }
+
+    .services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .service-card-full {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+        transition: all 0.3s;
+    }
+
+    .service-card-full:hover {
+        border-color: rgba(0,212,212,0.4);
+        transform: translateY(-3px);
+        box-shadow: 0 16px 50px rgba(0,0,0,0.4);
+    }
+
+    .card-top {
+        padding: 2rem;
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .card-icon-big {
+        font-size: 2.8rem;
+        flex-shrink: 0;
+    }
+
+    .card-info h3 {
+        font-family: 'Barlow Condensed', sans-serif;
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 0.4rem;
+    }
+
+    .card-info p {
+        font-size: 0.88rem;
+        color: var(--muted);
+        line-height: 1.6;
+    }
+
+    .card-bottom {
+        padding: 1.2rem 2rem;
+        background: var(--card);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-top: 1px solid var(--border);
+    }
+
+    .price-area .from { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+    .price-area .price { font-weight: 700; color: var(--cyan); font-size: 1.2rem; font-family: 'Barlow Condensed', sans-serif; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-hero">
+    <div class="container">
+        <div class="page-label">Catálogo completo</div>
+        <h1 class="page-title">NUESTROS SERVICIOS</h1>
+        <p class="page-sub">Expertos en cada área para resolver cualquier problema de tu hogar</p>
+    </div>
+</div>
+
+<div class="services-section">
+    <div class="container">
+        <div class="services-grid">
+            {% for servicio in servicios %}
+            <div class="service-card-full">
+                <div class="card-top">
+                    <div class="card-icon-big">{{ servicio.icono }}</div>
+                    <div class="card-info">
+                        <h3>{{ servicio.nombre }}</h3>
+                        <p>{{ servicio.descripcion }}</p>
+                    </div>
+                </div>
+                <div class="card-bottom">
+                    <div class="price-area">
+                        <div class="from">Precio desde</div>
+                        <div class="price">${{ "{:,.0f}".format(servicio.precio_base) }}</div>
+                    </div>
+                    <a href="/solicitar?servicio_id={{ servicio.id }}" class="btn btn-primary">
+                        Solicitar →
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Panel de Administración</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #0a0a0a;
+            --dark: #111215;
+            --surface: #1a1d22;
+            --card: #20242c;
+            --border: #2a2e38;
+            --cyan: #00d4d4;
+            --text: #e8eaed;
+            --muted: #8892a4;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Barlow', sans-serif;
+            background: var(--cyan);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            width: 100%;
+            max-width: 440px;
+            box-shadow: 0 24px 80px rgba(0,0,0,0.25);
+        }
+
+        .card-header {
+            background: #1a2235;
+            padding: 2.5rem 2rem;
+            text-align: center;
+        }
+
+        .header-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-header h1 {
+            font-family: 'Playfair Display', 'Times New Roman', Georgia, serif;
+            font-size: 2rem;
+            letter-spacing: 3px;
+            color: white;
+        }
+
+        .card-header p {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.9rem;
+            margin-top: 4px;
+        }
+
+        .card-body {
+            padding: 2rem;
+            background: #f0f4f8;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 6px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 11px 14px;
+            border: 2px solid #d0d8e4;
+            border-radius: 8px;
+            font-family: 'Barlow', sans-serif;
+            font-size: 0.95rem;
+            color: #333;
+            background: white;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-control:focus { border-color: var(--cyan); }
+
+        .btn-login {
+            width: 100%;
+            padding: 13px;
+            background: var(--cyan);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Barlow', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 0.5rem;
+        }
+
+        .btn-login:hover { background: #00a8a8; }
+
+        .back-link {
+            text-align: center;
+            margin-top: 1.2rem;
+        }
+
+        .back-link a {
+            color: #888;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+
+        .back-link a:hover { color: var(--cyan); }
+
+        .alert {
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 0.88rem;
+            margin-bottom: 1rem;
+            background: #fde8e8;
+            color: #c53030;
+            border-left: 3px solid #c53030;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <div class="card-header">
+            <div class="header-icon">🔧</div>
+            <h1>Last Breath</h1>
+            <p>Panel de Administración</p>
+        </div>
+        <div class="card-body">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            <form method="POST">
+                <div class="form-group">
+                    <label>Usuario</label>
+                    <input type="text" name="usuario" class="form-control" placeholder="admin" required>
+                </div>
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input type="password" name="password" class="form-control" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-login">Iniciar Sesión</button>
+            </form>
+
+            <div class="back-link">
+                <a href="/">← Volver al sitio web</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

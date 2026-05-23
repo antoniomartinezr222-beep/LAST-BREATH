@@ -1,0 +1,432 @@
+{% extends "base.html" %}
+{% block title %}Last Breath - Servicios para tu Hogar{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hero {
+        min-height: 92vh;
+        display: flex;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+        background: radial-gradient(ellipse 80% 80% at 50% -10%, rgba(0,212,212,0.15), transparent),
+                    var(--black);
+    }
+
+    .hero::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    }
+
+    .hero-grid {
+        position: absolute;
+        inset: 0;
+        background-image: 
+            linear-gradient(rgba(0,212,212,0.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0,212,212,0.04) 1px, transparent 1px);
+        background-size: 60px 60px;
+        mask-image: radial-gradient(ellipse 70% 70% at center, black, transparent);
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 1;
+        max-width: 680px;
+    }
+
+    .hero-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(0,212,212,0.1);
+        border: 1px solid rgba(0,212,212,0.3);
+        border-radius: 20px;
+        padding: 6px 16px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--cyan);
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 1.5rem;
+    }
+
+    .hero-tag::before {
+        content: '';
+        width: 6px;
+        height: 6px;
+        background: var(--cyan);
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    .hero h1 {
+        font-family: 'Playfair Display', 'Times New Roman', Georgia, serif;
+        font-size: clamp(3.5rem, 8vw, 7rem);
+        line-height: 0.95;
+        letter-spacing: 2px;
+        margin-bottom: 1.5rem;
+    }
+
+    .hero h1 .line-accent { color: var(--cyan); }
+
+    .hero p {
+        font-size: 1.15rem;
+        color: var(--light-muted);
+        line-height: 1.7;
+        max-width: 520px;
+        margin-bottom: 2.5rem;
+        font-weight: 300;
+    }
+
+    .hero-cta {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    .hero-cta .btn { font-size: 1rem; padding: 12px 28px; }
+
+    .hero-stats {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .stat-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 1.2rem 1.5rem;
+        text-align: center;
+        min-width: 150px;
+    }
+
+    .stat-card .num {
+        font-family: 'Playfair Display', 'Times New Roman', Georgia, serif;
+        font-size: 2.5rem;
+        color: var(--cyan);
+        line-height: 1;
+    }
+
+    .stat-card .label {
+        font-size: 0.78rem;
+        color: var(--muted);
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        margin-top: 4px;
+    }
+
+    /* SERVICES SECTION */
+    .section {
+        padding: 5rem 0;
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .section-label {
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--cyan);
+        margin-bottom: 0.8rem;
+    }
+
+    .section h2 {
+        font-family: 'Playfair Display', 'Times New Roman', Georgia, serif;
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        letter-spacing: 2px;
+        color: var(--text);
+        line-height: 1;
+    }
+
+    .section p.sub {
+        color: var(--muted);
+        margin-top: 0.8rem;
+        font-size: 1rem;
+    }
+
+    .services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.2rem;
+    }
+
+    .service-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 1.8rem;
+        text-decoration: none;
+        color: var(--text);
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .service-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, var(--cyan), var(--cyan), transparent);
+        background-size: 200% 100%;
+        transform: scaleX(0);
+        transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        transform-origin: left;
+    }
+
+    .service-card:hover {
+        border-color: rgba(0,212,212,0.4);
+        transform: translateY(-4px);
+        box-shadow: 0 16px 48px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,212,212,0.12);
+        background: linear-gradient(135deg, var(--card) 80%, rgba(0,212,212,0.04) 100%);
+    }
+
+    .service-card:hover::before {
+        transform: scaleX(1);
+        animation: shimmer-line 1.2s ease forwards;
+    }
+
+    @keyframes shimmer-line {
+        0%   { background-position: 200% 0; opacity: 0.7; }
+        50%  { background-position: 0% 0;   opacity: 1; }
+        100% { background-position: -200% 0; opacity: 1; }
+    }
+
+    .service-card:hover .service-icon {
+        transform: scale(1.15) translateY(-2px);
+        filter: drop-shadow(0 0 8px rgba(0,212,212,0.6));
+        transition: transform 0.3s ease, filter 0.3s ease;
+    }
+
+    .service-icon {
+        transition: transform 0.3s ease, filter 0.3s ease;
+    }
+
+    .service-icon {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        display: block;
+    }
+
+    .service-card h3 {
+        font-family: 'Barlow Condensed', sans-serif;
+        font-size: 1.3rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.5rem;
+    }
+
+    .service-card p {
+        font-size: 0.88rem;
+        color: var(--muted);
+        line-height: 1.6;
+    }
+
+    .service-price {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 1.2rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border);
+    }
+
+    .price-label { font-size: 0.78rem; color: var(--muted); }
+    .price-value { font-weight: 700; color: var(--cyan); font-size: 1.1rem; }
+
+    /* HOW IT WORKS */
+    .steps {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 2rem;
+        position: relative;
+    }
+
+    .step {
+        text-align: center;
+    }
+
+    .step-num {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: rgba(0,212,212,0.1);
+        border: 2px solid rgba(0,212,212,0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Playfair Display', 'Times New Roman', Georgia, serif;
+        font-size: 1.5rem;
+        color: var(--cyan);
+        margin: 0 auto 1rem;
+    }
+
+    .step h3 {
+        font-family: 'Barlow Condensed', sans-serif;
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .step p { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+
+    /* CTA SECTION */
+    .cta-section {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 4rem 2rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .cta-section::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse 60% 60% at center, rgba(0,212,212,0.08), transparent);
+    }
+
+    .cta-section h2 {
+        font-family: 'Playfair Display', 'Times New Roman', Georgia, serif;
+        font-size: 3rem;
+        letter-spacing: 2px;
+        position: relative;
+    }
+
+    .cta-section p {
+        color: var(--muted);
+        margin: 1rem auto 2rem;
+        max-width: 480px;
+        position: relative;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-grid"></div>
+    <div class="container" style="position:relative;z-index:1; display:flex; justify-content:space-between; align-items:center; width:100%;">
+        <div class="hero-content">
+            <div class="hero-tag">Servicios Profesionales</div>
+            <h1>
+                TU HOGAR,<br>
+                <span class="line-accent">NUESTRA</span><br>
+                MISIÓN.
+            </h1>
+            <p>Conectamos a los mejores técnicos con quienes más los necesitan. Rápido, confiable y con garantía de calidad.</p>
+            <div class="hero-cta">
+                <a href="/servicios" class="btn btn-primary">Ver Servicios</a>
+                <a href="/solicitar" class="btn btn-outline">Solicitar Ahora →</a>
+            </div>
+        </div>
+        <div class="hero-stats">
+            <div class="stat-card">
+                <div class="num">500+</div>
+                <div class="label">Servicios Completados</div>
+            </div>
+            <div class="stat-card">
+                <div class="num">12</div>
+                <div class="label">Tipos de Servicio</div>
+            </div>
+            <div class="stat-card">
+                <div class="num">24h</div>
+                <div class="label">Respuesta Rápida</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SERVICES -->
+<section class="section" style="background: var(--dark);">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-label">¿Qué ofrecemos?</div>
+            <h2>NUESTROS SERVICIOS</h2>
+            <p class="sub">Soluciones profesionales para el mantenimiento y mejora de tu hogar</p>
+        </div>
+        <div class="services-grid">
+            {% for servicio in servicios %}
+            <a href="/solicitar?servicio_id={{ servicio.id }}" class="service-card">
+                <span class="service-icon">{{ servicio.icono }}</span>
+                <h3>{{ servicio.nombre }}</h3>
+                <p>{{ servicio.descripcion }}</p>
+                <div class="service-price">
+                    <span class="price-label">Desde</span>
+                    <span class="price-value">${{ "{:,.0f}".format(servicio.precio_base) }}</span>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-label">¿Cómo funciona?</div>
+            <h2>SIMPLE Y RÁPIDO</h2>
+        </div>
+        <div class="steps">
+            <div class="step">
+                <div class="step-num">01</div>
+                <h3>Elige tu servicio</h3>
+                <p>Selecciona el tipo de servicio que necesitas de nuestro catálogo.</p>
+            </div>
+            <div class="step">
+                <div class="step-num">02</div>
+                <h3>Haz tu solicitud</h3>
+                <p>Llena el formulario con los detalles y tu dirección.</p>
+            </div>
+            <div class="step">
+                <div class="step-num">03</div>
+                <h3>Te contactamos</h3>
+                <p>Un técnico confirmará la visita y el horario disponible.</p>
+            </div>
+            <div class="step">
+                <div class="step-num">04</div>
+                <h3>Servicio garantizado</h3>
+                <p>Trabajo profesional con garantía de satisfacción total.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="section">
+    <div class="container">
+        <div class="cta-section">
+            <h2>¿LISTO PARA EMPEZAR?</h2>
+            <p>Regístrate gratis y solicita tu primer servicio hoy mismo.</p>
+            <a href="/registro" class="btn btn-primary" style="font-size:1.05rem;padding:12px 32px;">
+                Crear Cuenta Gratis
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

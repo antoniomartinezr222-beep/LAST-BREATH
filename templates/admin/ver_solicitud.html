@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ver Solicitud - Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --black:#0a0a0a;--dark:#0e1117;--surface:#161b25;--card:#1d2330;--border:#252d3d;--cyan:#00d4d4;--amber:#f5a623;--green:#2ecc71;--red:#e74c3c;--blue:#3498db;--text:#e8eaed;--muted:#7a8499; }
+        * { margin:0;padding:0;box-sizing:border-box; }
+        body { font-family:'Barlow',sans-serif;background:var(--dark);color:var(--text);min-height:100vh;padding:2rem; }
+        .container { max-width:680px;margin:0 auto; }
+        h1 { font-family:'Playfair Display', 'Times New Roman', Georgia, serif;font-size:2.5rem;letter-spacing:2px;margin-bottom:2rem; }
+        h1 span { color:var(--cyan); }
+        .card { background:var(--card);border:1px solid var(--border);border-radius:12px;padding:2rem;margin-bottom:1.2rem; }
+        .card h3 { font-family:'Barlow',sans-serif;font-weight:700;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:1rem; }
+        .info-grid { display:grid;grid-template-columns:160px 1fr;gap:0.8rem 1rem; }
+        .info-label { font-size:0.78rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted); }
+        .badge { display:inline-block;padding:3px 12px;border-radius:20px;font-size:0.75rem;font-weight:600; }
+        .badge-warning{background:rgba(245,166,35,.15);color:var(--amber);border:1px solid rgba(245,166,35,.3)}
+        .badge-info{background:rgba(52,152,219,.12);color:var(--blue);border:1px solid rgba(52,152,219,.3)}
+        .badge-success{background:rgba(46,204,113,.1);color:var(--green);border:1px solid rgba(46,204,113,.3)}
+        .badge-danger{background:rgba(231,76,60,.1);color:var(--red);border:1px solid rgba(231,76,60,.3)}
+        .btn{display:inline-flex;align-items:center;gap:6px;padding:10px 22px;border-radius:8px;font-family:'Barlow',sans-serif;font-weight:600;font-size:0.9rem;cursor:pointer;border:none;text-decoration:none;transition:all 0.2s;}
+        .btn-primary{background:var(--cyan);color:var(--black);}
+        .btn-ghost{background:var(--surface);color:var(--text);border:1px solid var(--border);}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SOLICITUD <span>#{{ solicitud['id'] }}</span></h1>
+        
+        <div class="card">
+            <h3>Datos del Cliente</h3>
+            <div class="info-grid">
+                <span class="info-label">Nombre</span>
+                <span>{{ solicitud['cliente_nombre'] }}</span>
+                <span class="info-label">Email</span>
+                <span style="color:var(--cyan)">{{ solicitud['cliente_email'] }}</span>
+                <span class="info-label">Teléfono</span>
+                <span>{{ solicitud['cliente_tel'] }}</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Detalles del Servicio</h3>
+            <div class="info-grid">
+                <span class="info-label">Servicio</span>
+                <span>{{ solicitud['servicio_icono'] }} {{ solicitud['servicio_nombre'] }}</span>
+                <span class="info-label">Dirección</span>
+                <span>{{ solicitud['direccion'] }}</span>
+                <span class="info-label">Descripción</span>
+                <span style="color:var(--muted)">{{ solicitud['descripcion'] or 'Sin descripción' }}</span>
+                <span class="info-label">Fecha</span>
+                <span style="color:var(--muted)">{{ solicitud['fecha_solicitud'] }}</span>
+                <span class="info-label">Estado</span>
+                <span>
+                    {% if solicitud['estado'] == 'Pendiente' %}<span class="badge badge-warning">Pendiente</span>
+                    {% elif solicitud['estado'] == 'En Proceso' %}<span class="badge badge-info">En Proceso</span>
+                    {% elif solicitud['estado'] == 'Completado' %}<span class="badge badge-success">Completado</span>
+                    {% else %}<span class="badge badge-danger">Cancelado</span>{% endif %}
+                </span>
+                {% if solicitud['notas_admin'] %}
+                <span class="info-label">Notas Admin</span>
+                <span style="color:var(--amber)">{{ solicitud['notas_admin'] }}</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <div style="display:flex;gap:1rem;">
+            <a href="/admin/solicitudes/{{ solicitud['id'] }}/editar" class="btn btn-primary">✏ Editar Estado</a>
+            <a href="/admin/" class="btn btn-ghost">← Volver</a>
+        </div>
+    </div>
+</body>
+</html>

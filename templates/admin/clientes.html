@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Clientes - Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --black:#0a0a0a;--dark:#0e1117;--surface:#161b25;--card:#1d2330;--border:#252d3d;--cyan:#00d4d4;--text:#e8eaed;--muted:#7a8499; }
+        * { margin:0;padding:0;box-sizing:border-box; }
+        body { font-family:'Barlow',sans-serif;background:var(--dark);color:var(--text);min-height:100vh;padding:2rem; }
+        .container { max-width:900px;margin:0 auto; }
+        h1 { font-family:'Playfair Display', 'Times New Roman', Georgia, serif;font-size:2.5rem;letter-spacing:2px;margin-bottom:2rem; }
+        h1 span { color:var(--cyan); }
+        .table-wrap { background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden; }
+        table { width:100%;border-collapse:collapse; }
+        th { padding:11px 16px;text-align:left;font-size:0.72rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);background:var(--surface);border-bottom:1px solid var(--border); }
+        td { padding:14px 16px;border-bottom:1px solid var(--border);font-size:0.88rem; }
+        tr:last-child td { border-bottom:none; }
+        tr:hover td { background:rgba(255,255,255,.02); }
+        .btn { display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:8px;font-family:'Barlow',sans-serif;font-weight:600;font-size:0.85rem;cursor:pointer;border:none;text-decoration:none; }
+        .btn-ghost { background:var(--surface);color:var(--text);border:1px solid var(--border); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CLIENTES <span>REGISTRADOS</span></h1>
+        <div style="margin-bottom:1rem;"><a href="/admin/" class="btn btn-ghost">← Volver al Dashboard</a></div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Teléfono</th>
+                        <th>Dirección</th>
+                        <th>Registrado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cliente in clientes %}
+                    <tr>
+                        <td style="color:var(--muted)">{{ cliente['id'] }}</td>
+                        <td><strong>{{ cliente['nombre'] }}</strong></td>
+                        <td style="color:var(--cyan)">{{ cliente['email'] }}</td>
+                        <td>{{ cliente['telefono'] }}</td>
+                        <td style="color:var(--muted)">{{ cliente['direccion'] }}</td>
+                        <td style="color:var(--muted);font-size:0.82rem">{{ cliente['creado_en'] }}</td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--muted)">No hay clientes registrados.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+{% block title %}Solicitar Servicio - Last Breath{% endblock %}
+
+{% block extra_css %}
+<style>
+    .page-hero {
+        padding: 3rem 0 2rem;
+        border-bottom: 1px solid var(--border);
+        background: linear-gradient(to bottom, rgba(0,212,212,0.05), transparent);
+    }
+
+    .page-label {
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--cyan);
+        margin-bottom: 0.5rem;
+    }
+
+    .page-title {
+        font-family: 'Playfair Display', 'Times New Roman', Georgia, serif;
+        font-size: 3rem;
+        letter-spacing: 2px;
+    }
+
+    .solicitar-layout {
+        display: grid;
+        grid-template-columns: 1fr 380px;
+        gap: 2rem;
+        padding: 3rem 0;
+    }
+
+    .form-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 2rem;
+    }
+
+    .form-card h2 {
+        font-family: 'Barlow Condensed', sans-serif;
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: var(--text);
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 1rem;
+    }
+
+    .form-inner { display: flex; flex-direction: column; gap: 1.2rem; }
+
+    .service-selector {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.8rem;
+    }
+
+    .service-option {
+        display: none;
+    }
+
+    .service-label {
+        background: var(--card);
+        border: 2px solid var(--border);
+        border-radius: 10px;
+        padding: 1rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+    }
+
+    .service-label:hover { border-color: rgba(0,212,212,0.4); }
+
+    .service-option:checked + .service-label {
+        border-color: var(--cyan);
+        background: rgba(0,212,212,0.08);
+    }
+
+    .service-label .svc-icon { font-size: 1.5rem; }
+    .service-label .svc-name { font-weight: 600; font-size: 0.85rem; }
+
+    .sidebar-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 1.5rem;
+        height: fit-content;
+    }
+
+    .sidebar-card h3 {
+        font-family: 'Barlow Condensed', sans-serif;
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--cyan);
+    }
+
+    .info-item {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        padding: 0.8rem 0;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .info-item:last-child { border-bottom: none; }
+    .info-icon { font-size: 1.2rem; flex-shrink: 0; }
+    .info-text strong { font-size: 0.9rem; display: block; }
+    .info-text p { font-size: 0.82rem; color: var(--muted); margin-top: 2px; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-hero">
+    <div class="container">
+        <div class="page-label">Nueva solicitud</div>
+        <h1 class="page-title">SOLICITAR SERVICIO</h1>
+    </div>
+</div>
+
+<div class="container">
+    <div class="solicitar-layout">
+        <div class="form-card">
+            <h2>📋 Detalles de tu solicitud</h2>
+            <form class="form-inner" method="POST" action="/solicitar">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                <div class="form-group">
+                    <label>Selecciona el Servicio</label>
+                    <div class="service-selector">
+                        {% for servicio in servicios %}
+                        <input type="radio" name="servicio_id" id="svc_{{ servicio.id }}" 
+                               value="{{ servicio.id }}" class="service-option"
+                               {% if servicio_seleccionado == servicio.id|string %}checked{% endif %}>
+                        <label for="svc_{{ servicio.id }}" class="service-label">
+                            <span class="svc-icon">{{ servicio.icono }}</span>
+                            <span class="svc-name">{{ servicio.nombre }}</span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Dirección del Servicio</label>
+                    <input type="text" name="direccion" class="form-control" 
+                           placeholder="Ej: Carrera 8 #2-48, Barrio Centro" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Descripción del problema (opcional)</label>
+                    <textarea name="descripcion" class="form-control" 
+                              placeholder="Describe brevemente qué necesitas... Ej: La llave del baño gotea constantemente desde hace 3 días."></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="padding:12px 28px;font-size:1rem;">
+                    Enviar Solicitud →
+                </button>
+            </form>
+        </div>
+
+        <div>
+            <div class="sidebar-card">
+                <h3>ℹ️ ¿Cómo funciona?</h3>
+                <div class="info-item">
+                    <span class="info-icon">1️⃣</span>
+                    <div class="info-text">
+                        <strong>Envías la solicitud</strong>
+                        <p>Completa el formulario con los detalles del servicio que necesitas.</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <span class="info-icon">2️⃣</span>
+                    <div class="info-text">
+                        <strong>Revisamos tu caso</strong>
+                        <p>Nuestro equipo revisa tu solicitud y asigna al técnico adecuado.</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <span class="info-icon">3️⃣</span>
+                    <div class="info-text">
+                        <strong>Te contactamos</strong>
+                        <p>Un técnico se comunicará contigo para confirmar fecha y detalles.</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <span class="info-icon">✅</span>
+                    <div class="info-text">
+                        <strong>Servicio garantizado</strong>
+                        <p>Trabajamos con garantía de calidad y satisfacción.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-card" style="margin-top:1rem;">
+                <h3>📞 ¿Urgente?</h3>
+                <p style="font-size:0.88rem;color:var(--muted);line-height:1.6;">
+                    Para emergencias llámanos directamente.<br>
+                    <strong style="color:var(--cyan);font-size:1.1rem;">+57 300 000 0000</strong>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

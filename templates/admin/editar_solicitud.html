@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Solicitud - Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #0a0a0a; --dark: #0e1117; --surface: #161b25; --card: #1d2330;
+            --border: #252d3d; --cyan: #00d4d4; --amber: #f5a623; --text: #e8eaed; --muted: #7a8499;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family: 'Barlow', sans-serif; background: var(--dark); color: var(--text); min-height: 100vh; padding: 2rem; }
+        .container { max-width: 600px; margin: 0 auto; }
+        h1 { font-family: 'Playfair Display', 'Times New Roman', Georgia, serif; font-size: 2.5rem; letter-spacing: 2px; margin-bottom: 2rem; }
+        h1 span { color: var(--cyan); }
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; }
+        .info-row { display: grid; grid-template-columns: 140px 1fr; gap: 0.5rem; padding: 0.8rem 0; border-bottom: 1px solid var(--border); align-items: center; }
+        .info-row:last-child { border-bottom: none; }
+        .info-label { font-size: 0.78rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
+        .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.2rem; }
+        .form-group label { font-size: 0.85rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; }
+        .form-control { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; color: var(--text); font-family: 'Barlow', sans-serif; font-size: 0.95rem; outline: none; transition: border-color 0.2s; width: 100%; }
+        .form-control:focus { border-color: var(--cyan); }
+        select.form-control option { background: var(--dark); }
+        textarea.form-control { resize: vertical; min-height: 100px; }
+        .btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 22px; border-radius: 8px; font-family: 'Barlow', sans-serif; font-weight: 600; font-size: 0.9rem; cursor: pointer; border: none; text-decoration: none; transition: all 0.2s; }
+        .btn-primary { background: var(--cyan); color: var(--black); }
+        .btn-primary:hover { background: #00a8a8; }
+        .btn-ghost { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+        .btn-ghost:hover { background: var(--card); }
+        .btn-row { display: flex; gap: 1rem; margin-top: 1.5rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>EDITAR <span>SOLICITUD</span> #{{ solicitud['id'] }}</h1>
+        <div class="card">
+            <div style="margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border);">
+                <div class="info-row">
+                    <span class="info-label">Cliente</span>
+                    <span>{{ solicitud['cliente_nombre'] }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Teléfono</span>
+                    <span style="color: var(--cyan);">{{ solicitud['cliente_tel'] }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Servicio</span>
+                    <span>{{ solicitud['servicio_icono'] }} {{ solicitud['servicio_nombre'] }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Dirección</span>
+                    <span>{{ solicitud['direccion'] }}</span>
+                </div>
+                {% if solicitud['descripcion'] %}
+                <div class="info-row">
+                    <span class="info-label">Descripción</span>
+                    <span style="color: var(--muted);">{{ solicitud['descripcion'] }}</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <form method="POST">
+                <div class="form-group">
+                    <label>Estado de la solicitud</label>
+                    <select name="estado" class="form-control">
+                        {% for e in estados %}
+                        <option value="{{ e }}" {% if solicitud['estado'] == e %}selected{% endif %}>{{ e }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Notas del Administrador</label>
+                    <textarea name="notas" class="form-control" placeholder="Observaciones, fecha de visita, técnico asignado...">{{ solicitud['notas_admin'] or '' }}</textarea>
+                </div>
+                <div class="btn-row">
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <a href="/admin/" class="btn btn-ghost">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Last Breath - Servicios{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #0a0a0a;
+            --dark: #111215;
+            --surface: #1a1d22;
+            --card: #20242c;
+            --border: #2a2e38;
+            --cyan: #00d4d4;
+            --cyan-dim: #00a8a8;
+            --amber: #f5a623;
+            --green: #2ecc71;
+            --red: #e74c3c;
+            --text: #e8eaed;
+            --muted: #8892a4;
+            --light-muted: #b0b8c8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Barlow', sans-serif;
+            background: var(--black);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            background: rgba(10,10,10,0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .nav-brand .icon {
+            width: 36px;
+            height: 36px;
+            background: var(--cyan);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .nav-brand .name {
+            font-family: 'Playfair Display', 'Times New Roman', Georgia, serif;
+            font-size: 1.6rem;
+            letter-spacing: 2px;
+            color: var(--text);
+        }
+
+        .nav-brand .name span { color: var(--cyan); }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--muted);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            padding: 6px 14px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .nav-links a:hover { color: var(--text); background: var(--surface); }
+        .nav-links a.active { color: var(--cyan); }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-family: 'Barlow', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--cyan);
+            color: var(--black);
+        }
+        .btn-primary:hover { background: var(--cyan-dim); transform: translateY(-1px); }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--cyan);
+            border: 1px solid var(--cyan);
+        }
+        .btn-outline:hover { background: var(--cyan); color: var(--black); }
+
+        .btn-ghost {
+            background: var(--surface);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+        .btn-ghost:hover { background: var(--card); }
+
+        .btn-danger {
+            background: var(--red);
+            color: white;
+        }
+
+        /* ALERTS */
+        .alert-container {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .alert {
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            border-left: 4px solid;
+            animation: slideIn 0.3s ease;
+            max-width: 360px;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .alert-success { background: #1a2e22; border-color: var(--green); color: #7ed4a4; }
+        .alert-danger { background: #2e1a1a; border-color: var(--red); color: #f08080; }
+        .alert-warning { background: #2e2a1a; border-color: var(--amber); color: #f0c080; }
+        .alert-info { background: #1a2530; border-color: var(--cyan); color: #80d4d4; }
+
+        /* BADGES */
+        .badge {
+            display: inline-block;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-warning { background: rgba(245,166,35,0.15); color: var(--amber); border: 1px solid rgba(245,166,35,0.3); }
+        .badge-info { background: rgba(0,212,212,0.1); color: var(--cyan); border: 1px solid rgba(0,212,212,0.3); }
+        .badge-success { background: rgba(46,204,113,0.1); color: var(--green); border: 1px solid rgba(46,204,113,0.3); }
+        .badge-danger { background: rgba(231,76,60,0.1); color: var(--red); border: 1px solid rgba(231,76,60,0.3); }
+
+        /* FORMS */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .form-control {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 14px;
+            color: var(--text);
+            font-family: 'Barlow', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+            width: 100%;
+        }
+
+        .form-control:focus { border-color: var(--cyan); }
+        .form-control::placeholder { color: var(--muted); }
+
+        select.form-control option { background: var(--dark); }
+
+        textarea.form-control { resize: vertical; min-height: 100px; }
+
+        /* CONTAINER */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--dark);
+            border-top: 1px solid var(--border);
+            padding: 2rem;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.85rem;
+            margin-top: 4rem;
+        }
+
+        footer .brand { color: var(--cyan); font-family: 'Playfair Display', serif; font-size: 1.1rem; letter-spacing: 2px; }
+
+        /* NOISE TEXTURE */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.4;
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" class="nav-brand">
+            <div class="icon">🔧</div>
+            <span class="name">LAST<span> BREATH</span></span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/servicios">Servicios</a></li>
+            {% if session.get('user_id') %}
+            <li><a href="/mis-solicitudes">Mis Solicitudes</a></li>
+            <li><a href="/solicitar" class="btn btn-primary">Solicitar</a></li>
+            <li><a href="/logout" class="btn btn-ghost">Salir</a></li>
+            {% else %}
+            <li><a href="/login" class="btn btn-outline">Ingresar</a></li>
+            <li><a href="/registro" class="btn btn-primary">Registrarse</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="alert-container">
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <div class="brand">LAST BREATH</div>
+        <p style="margin-top:6px">© 2025 Last Breath · Servicios profesionales para tu hogar</p>
+    </footer>
+
+    <script>
+        // Auto-dismiss alerts
+        setTimeout(() => {
+            document.querySelectorAll('.alert').forEach(a => {
+                a.style.transition = 'opacity 0.5s';
+                a.style.opacity = '0';
+                setTimeout(() => a.remove(), 500);
+            });
+        }, 4000);
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
